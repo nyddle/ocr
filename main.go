@@ -2,18 +2,34 @@ package main
 
 import (
 	"fmt"
-	"github.com/otiai10/gosseract"
+	"ocr/ocr"
+	"code.sajari.com/docconv"
+	"log"
 )
-//extract_text(filename, language="rus")
+
+
+func extractText(filename string) (string, error) {
+	return "", nil
+}
 
 func main() {
-	client := gosseract.NewClient()
-	defer client.Close()
 
-        client.Languages = []string{"rus"}
+	/*
+	Надо сделаю модулек, который из файлов типов: doc, docx, xls, xlsx, rtf, html, pdf (текстовых), pdf (картиночных), jpg, png, bmp, tiff - извлекает текстовые данные
+	 */
 
-	client.SetImage("/Users/nyddle/Documents/testocr.jpg")
-	text, _ := client.Text()
-	fmt.Println(text)
-	// Hello, World!
+	for _, filename := range([]string{"/Users/nyddle/Downloads/alexanderdavydovcv.docx"}) {
+		languages := []string{"rus"}
+		text, err := ocr.ExtractText(filename, languages)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(text)
+	}
+
+	res, err := docconv.ConvertPath("/Users/nyddle/Downloads/alexanderdavydovcv.docx")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(res)
 }
